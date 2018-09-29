@@ -87,3 +87,9 @@ function CellFromInputElement(el) {
 
   return cell;
 }
+
+function addRelation(A, f, B) {
+  A.addListener((e, target) => {
+    target.set(f(A.value), e);
+  }, B);    
+}

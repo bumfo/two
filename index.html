@@ -9,13 +9,8 @@
   var A = CellFromInputElement(document.querySelector('#A'));
   var B = CellFromInputElement(document.querySelector('#B'));
 
-  A.addListener((e, target) => {
-    target.set((3.0 * A.value) | 0, e);
-  }, B);
-
-  B.addListener((e, target) => {
-    target.set((B.value / 3.0) | 0, e);
-  }, A);
+  addRelation(A, x => (3 * (x | 0)) | 0, B);
+  addRelation(B, x => ((x | 0) / 3) | 0, A);
 
   A.set(123);
 </script>
