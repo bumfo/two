@@ -1,0 +1,22 @@
+<!doctype html>
+<title>Two</title>
+
+<input id="A">
+<input id="B">
+
+<script src="cell.js"></script>
+<script src="persistent.js"></script>
+<script>
+  var A0 = CellFromField(new PersistentField('A0', '123'));
+
+  var A = CellFromInputBox(document.querySelector('#A'));
+  var B = CellFromInputBox(document.querySelector('#B'));
+
+  addRelation(A0, x => parseInt(x, 10), A);
+  addRelation(A, x => x, A0);
+
+  addRelation(A, x => (3 * (x | 0)) | 0, B);
+  addRelation(B, x => ((x | 0) / 3) | 0, A);
+
+  A0.fire();
+</script>
