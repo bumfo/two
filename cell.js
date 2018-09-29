@@ -1,17 +1,32 @@
+class Cons {
+  constructor(car, cdr) {
+    this.car = car;
+    this.cdr = cdr;
+  }
+}
+
+function listContains(list, val) {
+  while (list !== null) {
+    if (list.car === val) {
+      return true;
+    }
+    list = list.cdr;
+  }
+  return false;
+}
+
 class CellEvent {
-  constructor(payload) {
+  constructor(payload, sources = null) {
     this.payload = payload;
-    this.sources = new Set();
+    this.sources = sources;
   }
 
   addSource(source) {
-    this.sources.add(source);
-
-    return this;
+    return new CellEvent(this.payload, new Cons(source, this.sources));
   }
 
   static get(source, payload) {
-    return new CellEvent(payload).addSource(source);
+    return new CellEvent(payload, new Cons(source, null));
   }
 }
 
@@ -30,7 +45,7 @@ class Subject {
       var listener = pair[0];
       var target = pair[1];
 
-      if (!e.sources.has(target)) {
+      if (!listContains(e.sources, target)) {
         listener(e.addSource(this.source), target);
       }
     }
