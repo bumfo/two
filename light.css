@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+html, body, input, button {
+  font: normal 16px/1.5 sans-serif;
+}
+
+input:not([type]), input[type=text] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+
+input:not([type]), input[type=text] {
+  padding: .2ex .25ex;
+  margin: -.2ex -.25ex;
+
+  /*padding: 0 .5ex;*/
+  /*border: .5px solid rgba(0,0,0,.2);*/
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,.2);
+}
+
+input:not([type]):focus, input[type=text]:focus {
+  box-shadow: 0 0 0 1.5px rgba(59, 153, 252, .5), 0 0 0 0.5px rgba(59, 153, 252, .7);
+}
+
+body > section {
+  padding: 15px;
+}

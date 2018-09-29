@@ -1,8 +1,17 @@
 <!doctype html>
 <title>Two</title>
 
-<input id="A">
-<input id="B">
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1.0">
+
+<style>
+  @import url(light.css);
+</style>
+
+<section>
+  <input id="A">
+  * 3 = 
+  <input id="B">
+</section>
 
 <script src="cell.js"></script>
 <script src="persistent.js"></script>
@@ -12,7 +21,7 @@
   var A = CellFromInputBox(document.querySelector('#A'));
   var B = CellFromInputBox(document.querySelector('#B'));
 
-  addRelation(A0, x => parseInt(x, 10), A);
+  addRelation(A0, x => x | 0, A);
   addRelation(A, x => x, A0);
 
   addRelation(A, x => (3 * (x | 0)) | 0, B);
