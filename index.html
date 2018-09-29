@@ -6,8 +6,8 @@
 
 <script src="cell.js"></script>
 <script>
-  var A = CellFromInputElement(document.querySelector('#A'));
-  var B = CellFromInputElement(document.querySelector('#B'));
+  var A = CellFromInputBox(document.querySelector('#A'));
+  var B = CellFromInputBox(document.querySelector('#B'));
 
   addRelation(A, x => (3 * (x | 0)) | 0, B);
   addRelation(B, x => ((x | 0) / 3) | 0, A);

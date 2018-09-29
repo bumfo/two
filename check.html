@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Two</title>
+
+<input id="A" type="checkbox">
+<input id="B">
+
+<script src="cell.js"></script>
+<script>
+  var A = CellFromCheckBox(document.querySelector('#A'));
+  var B = CellFromInputBox(document.querySelector('#B'));
+
+  function boolFromString(x) {
+    return x === 'true' ? true : x === 'false' ? false : null;
+  }
+
+  addRelation(A, x => x, B);
+  addRelation(B, x => boolFromString(x), A);
+
+  A.set(true);
+</script>

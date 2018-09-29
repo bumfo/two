@@ -24,6 +24,10 @@ class CellEvent {
   addSource(source) {
     return new CellEvent(this.payload, new Cons(source, this.sources));
   }
+
+  static get(source, payload) {
+    return new CellEvent(payload, new Cons(source, null));
+  }
 }
 
 class Subject {
@@ -72,18 +76,37 @@ class Cell {
   }
 }
 
-function CellFromInputElement(el) {
+function CellFromInputBox(el) {
   var cell = new Cell(null);
 
   el.addEventListener('input', e => {
-    cell.set(el.value);
+    cell.set(el.value, CellEvent.get(el));
   });
 
-  cell.addListener(e => {
+  cell.addListener((e, target) => {
     var val = cell.value;
 
-    el.value = val === null ? '' : val;
+    target.value = val === null ? '' : val;
+  }, el);
+
+  return cell;
+}
+
+function CellFromCheckBox(el) {
+  var cell = new Cell(null);
+
+  el.addEventListener('change', e => {
+    cell.set(el.checked, CellEvent.get(el));
   });
+
+  cell.addListener((e, target) => {
+    var val = cell.value;
+
+    if (val !== null) {
+      target.checked = val;
+    }
+    target.indeterminate = val === null;
+  }, el);
 
   return cell;
 }
