@@ -6,16 +6,65 @@
 
 <script src="cell.js"></script>
 <script>
-  var A = CellFromCheckBox(document.querySelector('#A'));
-  var B = CellFromInputBox(document.querySelector('#B'));
+  class PersistentField {
+    constructor(key, defaultValue = null) {
+      this.key = key;
+      this.prefixedKey = location.pathname + '$' + key;
+
+      if (!this.load()) {
+        this.set(defaultValue);
+      }
+    }
+
+    load() {
+      var val = localStorage.getItem(this.prefixedKey);
+
+      if (val === null) {
+        return false;
+      } else {
+        this.value = val;
+        return true;
+      }
+    }
+
+    set(value) {
+      this.value = value;
+      localStorage.setItem(this.prefixedKey, value);
+    }
+  }
+
+  function CellFromField(field) {
+    var cell = new Cell(field.value);
+
+    cell.addListener((e, target) => {
+      var val = cell.value;
+
+      target.set(val);
+    }, field);
+
+    return cell;
+  }
 
   function boolFromYesNo(x) {
+    x = x + '';
+
     x = x.toLowerCase();
     return x === 'yes' ? true : x === 'no' ? false : null;
   }
 
-  addRelation(A, x => x ? 'yes' : 'no', B);
+  function yesNoFromBool(x) {
+    return x === null ? 'intermediate' : x ? 'yes' : 'no';
+  }
+
+  var A = CellFromCheckBox(document.querySelector('#A'));
+  var B = CellFromInputBox(document.querySelector('#B'));
+  var C = CellFromField(new PersistentField('checked', 'yes'));
+
+  addRelation(A, x => yesNoFromBool(x), B);
   addRelation(B, x => boolFromYesNo(x), A);
 
-  A.set(true);
+  addRelation(B, x => x, C);
+  addRelation(C, x => x, B);
+
+  C.fire();
 </script>

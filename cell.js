@@ -59,15 +59,21 @@ class Cell {
     this.silence = false;
   }
 
-  set(value, e = new CellEvent()) {
+  set(value, e) {
     this.value = value;
 
+    this.fire(e);
+  }
+
+  fire(e = new CellEvent()) {
     if (!this.silence) {
       this.silence = true;
 
-      this.subject.emit(e.addSource(this));
-
-      this.silence = false;
+      try {
+        this.subject.emit(e.addSource(this));
+      } finally {
+        this.silence = false;
+      }
     }
   }
 
