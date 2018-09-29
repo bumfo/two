@@ -56,14 +56,14 @@
     }
   }
 
-  class ViewModel {
+  class Cell {
     constructor(value = 0) {
       this.value = value;
       this.subject = new Subject(this);
       this.silence = false;
     }
 
-    setValue(value, e = new Event()) {
+    set(value, e = new Event()) {
       this.value = value;
 
       if (!this.silence) {
@@ -80,11 +80,11 @@
     }
   }
 
-  function viewModelFromInputElement(el) {
-    var v = new ViewModel();
+  function CellFromInputElement(el) {
+    var v = new Cell();
 
     el.addEventListener('input', e => {
-      v.setValue(el.value);
+      v.set(el.value);
     });
 
     v.addListener(e => {
@@ -94,16 +94,16 @@
     return v;
   }
 
-  var A = viewModelFromInputElement(document.querySelector('#A'));
-  var B = viewModelFromInputElement(document.querySelector('#B'));
+  var A = CellFromInputElement(document.querySelector('#A'));
+  var B = CellFromInputElement(document.querySelector('#B'));
 
   A.addListener((e, target) => {
-    target.setValue((3.0 * A.value) | 0, e);
+    target.set((3.0 * A.value) | 0, e);
   }, B);
 
   B.addListener((e, target) => {
-    target.setValue((B.value / 3.0) | 0, e);
+    target.set((B.value / 3.0) | 0, e);
   }, A);
 
-  A.setValue(123);
+  A.set(123);
 </script>
