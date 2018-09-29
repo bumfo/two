@@ -1,0 +1,109 @@
+<!doctype html>
+<title>Two</title>
+
+<input id="A">
+<input id="B">
+
+<script>
+
+  class Cons {
+    constructor(car, cdr) {
+      this.car = car;
+      this.cdr = cdr;
+    }
+  }
+
+  function listContains(list, val) {
+    while (list !== null) {
+      if (list.car === val) {
+        return true;
+      }
+      list = list.cdr;
+    }
+    return false;
+  }
+
+  class Subject {
+    constructor(source) {
+      this.source = source;
+      this.listeners = [];
+    }
+
+    addListener(listener, target) {
+      this.listeners.push([listener, target]);
+    }
+
+    emit(e) {
+      for (var pair of this.listeners) {
+        var listener = pair[0];
+        var target = pair[1];
+
+        if (!listContains(e.sources, target)) {
+          listener(e.addSource(this.source), target);
+        }
+      }
+    }
+  }
+
+  class Event {
+    constructor(payload, sources = null) {
+      this.payload = payload;
+      this.sources = sources;
+    }
+
+    addSource(source) {
+      return new Event(this.payload, new Cons(source, this.sources));
+    }
+  }
+
+  class ViewModel {
+    constructor(value = 0) {
+      this.value = value;
+      this.subject = new Subject(this);
+      this.silence = false;
+    }
+
+    setValue(value, e = new Event()) {
+      this.value = value;
+
+      if (!this.silence) {
+        this.silence = true;
+
+        this.subject.emit(e.addSource(this));
+
+        this.silence = false;
+      }
+    }
+
+    addListener(listener, target) {
+      this.subject.addListener(listener, target);
+    }
+  }
+
+  function viewModelFromInputElement(el) {
+    var v = new ViewModel();
+
+    el.addEventListener('input', e => {
+      v.setValue(el.value);
+    });
+
+    v.addListener(e => {
+      el.value = v.value;
+    });
+
+    return v;
+  }
+
+  var A = viewModelFromInputElement(document.querySelector('#A'));
+  var B = viewModelFromInputElement(document.querySelector('#B'));
+
+  A.addListener((e, target) => {
+    target.setValue((3.0 * A.value) | 0, e);
+  }, B);
+
+  B.addListener((e, target) => {
+    target.setValue((B.value / 3.0) | 0, e);
+  }, A);
+
+  A.setValue(123);
+</script>
