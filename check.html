@@ -9,12 +9,13 @@
   var A = CellFromCheckBox(document.querySelector('#A'));
   var B = CellFromInputBox(document.querySelector('#B'));
 
-  function boolFromString(x) {
-    return x === 'true' ? true : x === 'false' ? false : null;
+  function boolFromYesNo(x) {
+    x = x.toLowerCase();
+    return x === 'yes' ? true : x === 'no' ? false : null;
   }
 
-  addRelation(A, x => x, B);
-  addRelation(B, x => boolFromString(x), A);
+  addRelation(A, x => x ? 'yes' : 'no', B);
+  addRelation(B, x => boolFromYesNo(x), A);
 
   A.set(true);
 </script>
