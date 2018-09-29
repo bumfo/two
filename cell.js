@@ -1,32 +1,15 @@
-class Cons {
-  constructor(car, cdr) {
-    this.car = car;
-    this.cdr = cdr;
-  }
-}
-
-function listContains(list, val) {
-  while (list !== null) {
-    if (list.car === val) {
-      return true;
-    }
-    list = list.cdr;
-  }
-  return false;
-}
-
 class CellEvent {
-  constructor(payload, sources = null) {
+  constructor(payload) {
     this.payload = payload;
-    this.sources = sources;
-  }
-
-  addSource(source) {
-    return new CellEvent(this.payload, new Cons(source, this.sources));
+    this._sources = new Set();
   }
 
   static get(source, payload) {
-    return new CellEvent(payload, new Cons(source, null));
+    var e = new CellEvent(payload);
+
+    e._sources.add(source);
+
+    return e;
   }
 }
 
@@ -41,14 +24,18 @@ class Subject {
   }
 
   emit(e) {
+    e._sources.add(this.source);
+
     for (var pair of this.listeners) {
       var listener = pair[0];
       var target = pair[1];
 
-      if (!listContains(e.sources, target)) {
-        listener(e.addSource(this.source), target);
+      if (!e._sources.has(target)) {
+        listener(e, target);
       }
     }
+
+    e._sources.delete(this.source);
   }
 }
 
@@ -70,7 +57,7 @@ class Cell {
       this.silence = true;
 
       try {
-        this.subject.emit(e.addSource(this));
+        this.subject.emit(e);
       } finally {
         this.silence = false;
       }
