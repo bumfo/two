@@ -53,6 +53,8 @@ class Cell {
   }
 
   fire(e = new CellEvent()) {
+    console.log('fire', this);
+
     if (!this.silence) {
       this.silence = true;
 

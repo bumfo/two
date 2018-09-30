@@ -1,0 +1,56 @@
+<!doctype html>
+<title>Two</title>
+
+<meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1.0">
+
+<style>
+  @import url(light.css);
+</style>
+
+<section>
+  <p>
+    <input id="A">
+  </p>
+  <p>
+    <input id="B1"> &nbsp; <input id="B2">
+  </p>
+  <p>
+    <input id="C">
+  </p>
+</section>
+
+<script src="cell.js"></script>
+<script>
+  var A = CellFromInputBox(document.querySelector('#A')); A.tag = 'A';
+  var B1 = CellFromInputBox(document.querySelector('#B1')); B1.tag = 'B1';
+  var B2 = CellFromInputBox(document.querySelector('#B2')); B2.tag = 'B2';
+  var C = CellFromInputBox(document.querySelector('#C')); C.tag = 'C';
+
+  function split(x) {
+    var y = x.split(' ');
+
+    if (y.length === 0) {
+      return [null, null];
+    }
+
+    if (y.length === 1) {
+      return [y[0], null];
+    }
+
+    return y;
+  }
+
+  addRelation(A, x => split(x)[0], B1);
+  addRelation(A, x => split(x)[1], B2);
+
+  addRelation(B1, x => x + ' ' + B2.value, A);
+  addRelation(B2, x => B1.value + ' ' + x, A);
+
+  addRelation(B1, x => x + ' ' + B2.value, C);
+  addRelation(B2, x => B1.value + ' ' + x, C);
+
+  addRelation(C, x => split(x)[0], B1);
+  addRelation(C, x => split(x)[1], B2);
+
+  A.set('A B');
+</script>
