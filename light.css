@@ -44,10 +44,15 @@ input:not([type]), input[type=text] {
 }
 
 input:not([type]):focus, input[type=text]:focus {
-  border-color: rgba(59, 153, 252, .7);
+  /*border-color: rgba(59, 153, 252, .7);*/
+  /*border-color: rgba(0, 95, 244, .376470588);*/
+  border-color: #9FC3FB;
 
   /*box-shadow: 0 0 0 1.5px rgba(59, 153, 252, .5), 0 0 0 0.5px rgba(59, 153, 252, .7);*/
-  box-shadow: 0 0 0 1.5px rgba(59, 153, 252, .5);
+  /*box-shadow: 0 0 0 1.5px rgba(59, 153, 252, .5);*/
+  /*box-shadow: 0 0 0 1.5px #9FC3FB;*/
+  /*box-shadow: 0 0 0 1.5px rgba(0, 95, 244, .376470588);*/
+  box-shadow: 0 0 0 1px #9FC3FB;
 }
 
 /*input:not([type]) + input:not([type]), input[type=text] + input:not([type]),
